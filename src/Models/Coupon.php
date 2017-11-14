@@ -48,6 +48,6 @@ class Coupon extends Model
      */
     public function isExpired()
     {
-        return $this->expires_at ? Carbon::now()->get($this->expires_at) : false;
+        return $this->expires_at ? Carbon::now()->gte($this->expires_at) : false;
     }
 }
