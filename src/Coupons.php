@@ -45,7 +45,7 @@ class Coupons
      */
     public function check($code)
     {
-        $coupon = Coupon::where('code', $code);
+        $coupon = Coupon::where('code', $code)->first();
 
         // Check if exists
         if (!$coupon) {
