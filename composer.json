@@ -1,0 +1,28 @@
+{
+    "name": "blunck/coupons",
+    "description": "Coupon generator for Laravel 5",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Alexander Blunck",
+            "email": "alex@blunck.co"
+        }
+    ],
+    "require": {
+    },
+    "autoload": {
+        "psr-4": {
+            "Blunck\\Coupons\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Blunck\\Coupons\\CouponServiceProvider"
+            ],
+            "aliases": {
+                "Coupons": "Blunck\\Coupons\\Facades\\Coupons"
+            }
+        }
+    }
+}
