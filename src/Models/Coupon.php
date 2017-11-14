@@ -32,6 +32,13 @@ class Coupon extends Model
     ];
 
     /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = ['monetary_value'];
+
+    /**
      * Many to many user relationship.
      *
      * @return Collection
@@ -49,5 +56,17 @@ class Coupon extends Model
     public function isExpired()
     {
         return $this->expires_at ? Carbon::now()->gte($this->expires_at) : false;
+    }
+
+    /**
+     * monetary_value accessor.
+     *
+     * @return string
+     */
+    public function getMonetaryValueAttribute()
+    {
+        setlocale(LC_MONETARY, 'de_DE');
+
+        return money_format('%!n €', $this->discount);
     }
 }
