@@ -2,21 +2,21 @@
 
 namespace Blunck\Coupons\Traits;
 
-use Blunck\Coupons\Coupons;
 use Blunck\Coupons\Models\Coupon;
+use Coupons;
 
 trait Redeemable
 {
     /**
-     * Redeem coupon code for user.
+     * Redeem coupon for user.
      *
-     * @param string $code
+     * @param Coupon $coupon
      *
      * @return Coupon|false
      */
-    public function redeemCouponCode($code)
+    public function redeemCoupon(Coupon $coupon)
     {
-        return (new Coupons())::redeem($code, $this);
+        return Coupons::redeem($coupon, $this);
     }
 
     /**
