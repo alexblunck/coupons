@@ -1,10 +1,8 @@
 <?php
 
-namespace Blunck\Coupons\Exeptions;
+namespace Blunck\Coupons\Exceptions;
 
-use Exception;
-
-class InvalidCouponCodeException extends Exception
+class InvalidCouponCodeException extends CouponException
 {
     /**
      * @var string
