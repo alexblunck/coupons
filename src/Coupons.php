@@ -4,8 +4,10 @@ namespace Blunck\Coupons;
 
 use Carbon\Carbon;
 use Blunck\Coupons\Models\Coupon;
-use Blunck\Coupons\Exeptions\InvalidCouponCodeException;
-use Blunck\Coupons\Exeptions\AlreadyUsedCouponException;
+use Blunck\Coupons\Exceptions\CouponException;
+use Blunck\Coupons\Exceptions\InvalidCouponCodeException;
+use Blunck\Coupons\Exceptions\ExpiredCouponException;
+use Blunck\Coupons\Exceptions\UsedCouponException;
 
 class Coupons
 {
@@ -37,13 +39,15 @@ class Coupons
     }
 
     /**
-     * Check if a given coupon code is valid.
+     * Check if a given coupon code is valid &
+     * return coupon.
      *
-     * @param string $code
+     * @param Coupon $coupon
+     * @param User   [$user] - Check if user has already redeemed coupon
      *
-     * @return Coupon|false
+     * @return Coupon
      */
-    public function check($code)
+    public function check($code, $user = null)
     {
         $coupon = Coupon::where('code', $code)->first();
 
@@ -54,12 +58,17 @@ class Coupons
 
         // Check if expired
         if ($coupon->isExpired()) {
-            return false;
+            throw new ExpiredCouponException();
         }
 
         // Check if disposable & used
         if ($coupon->is_disposable && $coupon->users()->exists()) {
-            return false;
+            throw new UsedCouponException();
+        }
+
+        // Check id user has already redeemed coupon
+        if ($user && $this->isSecondUsageAttempt($coupon, $user)) {
+            throw new UsedCouponException();
         }
 
         return $coupon;
