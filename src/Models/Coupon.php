@@ -36,7 +36,7 @@ class Coupon extends Model
      *
      * @var array
      */
-    protected $appends = ['monetary_value'];
+    protected $appends = ['used_by'];
 
     /**
      * Many to many user relationship.
@@ -59,14 +59,12 @@ class Coupon extends Model
     }
 
     /**
-     * monetary_value accessor.
+     * used_by attribute accessor.
      *
      * @return string
      */
-    public function getMonetaryValueAttribute()
+    public function getUsedByAttribute()
     {
-        setlocale(LC_MONETARY, 'de_DE');
-
-        return money_format('%!n €', $this->discount);
+        return $this->users()->count();
     }
 }
