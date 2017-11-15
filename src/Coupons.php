@@ -75,35 +75,27 @@ class Coupons
     }
 
     /**
-     * Redeem a given coupon code for a specific user.
+     * Redeem a given coupon for a specific user.
      *
-     * @param Coupon $code
+     * @param Coupon $coupon
      * @param User   $user
      *
      * @return Coupon|false
      */
-    public function redeem(Coupon $code, $user)
+    public function redeem(Coupon $coupon, $user)
     {
         try {
-            $coupon = $this->check($code);
+            $coupon = $this->check($coupon->code);
 
-            // Check if coupon is valid
-            if ($coupon) {
-                // Check if user has already used coupon
-                if ($this->isSecondUsageAttempt($coupon, $user)) {
-                    throw new AlreadyUsedCouponException();
-                }
-
-                $coupon->users()->attach($user->id, [
-                    'used_at' => Carbon::now(),
-                ]);
-
-                return $coupon;
-            }
-        } catch (InvalidCouponCodeException $exception) {
+            // Create pivot table record
+            $coupon->users()->attach($user->id, [
+                'used_at' => Carbon::now(),
+            ]);
+        } catch (CouponException $e) {
+            return false;
         }
 
-        return false;
+        return $coupon;
     }
 
     /**
