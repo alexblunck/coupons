@@ -11,7 +11,9 @@ class CouponServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->loadMigrationsFrom(__DIR__.'/../migrations');
+        $this->publishes([
+            __DIR__.'/../migrations/create_coupons_table.php.stub' => database_path('migrations/'.date('Y_m_d_His', time()).'_create_coupons_table.php'),
+        ], 'migrations');
     }
 
     /**

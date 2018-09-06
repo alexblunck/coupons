@@ -15,6 +15,10 @@ composer require blunck/coupons
 The package includes a migration to create a `coupons` & `coupon_user` table:
 
 ```bash
+# Publish migration file
+php artisan vendor:publish --provider="Blunck\Coupons\CouponServiceProvider"
+
+# Run migration
 php artisan migrate
 ```
 
